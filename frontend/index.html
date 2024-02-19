@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helenas Bokrecensioner</title>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <form id="reviewForm">
+        <label for="title">Boktitel och författare:</label>
+        <input type="text" id="title" name="title" required>
+        
+        <label for="reviewContent">Recension:</label>
+        <textarea id="reviewContent" name="reviewContent" required></textarea>
+
+        <label for="ownerId">Användarnamn:</label>
+        <textarea id="ownerId" name="ownerId" required></textarea>
+        
+        <button id="reviewButton">Skicka in recension</button>
+    </form>
+
+    <ul id="reviewList"></ul>
+    
+</body>
+</html>

@@ -33,3 +33,34 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
+let reviewList = document.getElementById('reviewList');
+
+function printReviews() {
+    fetch('http://localhost:3000/documents')
+    .then(res => {
+        if (!res.ok) {
+            throw new Error(`Network response was not ok, status: ${res.status}`);
+        }
+        return res.json();
+    })
+    .then(data => {
+        console.log('reviews', data);
+
+        reviewList.innerHTML = '';
+
+        data.map(review => {
+            let h3 = document.createElement('h3')
+            h3.innerText = review.title;
+            let article = document.createElement('article')
+            article.innerText = review.content;
+            
+            reviewList.appendChild(h3);
+            reviewList.appendChild(article);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching reviews:', error);
+    });
+
+}

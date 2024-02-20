@@ -50,13 +50,21 @@ function printReviews() {
         reviewList.innerHTML = '';
 
         data.map(review => {
-            let h3 = document.createElement('h3')
+            let reviewWrapper = document.createElement('div');
+            reviewWrapper.classList.add('review-wrapper');
+
+            let h3 = document.createElement('h3');
             h3.innerText = review.title;
-            let article = document.createElement('article')
+            h3.classList.add('review-heading');
+
+            let article = document.createElement('article');
             article.innerText = review.content;
-            
-            reviewList.appendChild(h3);
-            reviewList.appendChild(article);
+
+            reviewWrapper.appendChild(h3);
+            reviewWrapper.appendChild(article);
+
+            reviewList.appendChild(reviewWrapper);
+
         });
     })
     .catch(error => {

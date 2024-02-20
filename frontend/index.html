@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helenas Bokrecensioner</title>
+    <title>Dina bokrecensioner</title>
+    <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
 <body>
-    <form id="reviewForm">
-        <label for="title">Boktitel och författare:</label>
-        <input type="text" id="title" name="title" required>
-        
-        <label for="reviewContent">Recension:</label>
-        <textarea id="reviewContent" name="reviewContent" required></textarea>
+    <section class="section-wrapper">
+        <div class="form-wrapper">
+            <h1>Dina bokrecensioner</h1>
+        <form class="review-form" id="reviewForm">
+            <label for="title" class="title">Författare & Boktitel:</label>
+            <input type="text" id="title" name="title" class="title-box" required>
+            
+            <label for="reviewContent" class="content-title">Recension:</label>
+            <textarea id="reviewContent" class="review-box" name="reviewContent" required></textarea> 
+        </form>
 
-        <label for="ownerId">Användarnamn:</label>
-        <textarea id="ownerId" name="ownerId" required></textarea>
-        
-        <button id="reviewButton">Skicka in recension</button>
-    </form>
-
-    <ul id="reviewList"></ul>
+        <button class="review-button" id="reviewButton">Skicka in recension</button>
+        </div>
+    
+        <ul id="reviewList" class="review-list"></ul>
+    </section>
+    
     
 </body>
 </html>

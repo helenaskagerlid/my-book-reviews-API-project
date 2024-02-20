@@ -73,3 +73,6 @@ function printReviews() {
 
 }
 
+tinymce.init({
+    selector: '#reviewContent'
+})

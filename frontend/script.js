@@ -1,7 +1,7 @@
 tinymce.init({
     selector: "#reviewContent",
     plugins: "image",
-    toolbar: "image | undo redo | forecolor backcolor | styleselect bold italic | alignleft alignright | code",
+    toolbar: "image | undo redo | forecolor backcolor | styleselect bold italic | alignleft alignright | checklist | code",
 
     setup: function (editor) {
         editor.on('change', function () {
@@ -13,7 +13,7 @@ tinymce.init({
 const reviewButton = document.getElementById("reviewButton");
 
 reviewButton.addEventListener("click", function (event) {
-    event.preventDefault();
+    //event.preventDefault();
     console.log('click');
 
     let reviewTitle = document.getElementById('title');
@@ -35,6 +35,7 @@ reviewButton.addEventListener("click", function (event) {
         .then(data => {
             console.log('Spara recension', data);
             reviewTitle.value = '';
+            reviewContent.value = '';
             printReviews();
         })
         .catch(error => {
@@ -50,7 +51,7 @@ function printReviews() {
         .then(data => {
             console.log('reviews', data);
 
-            data.forEach(review => {
+            data.map(review => {
                 let reviewWrapper = document.createElement('div');
                 reviewWrapper.classList.add('review-wrapper');
 

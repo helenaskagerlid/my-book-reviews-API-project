@@ -53,28 +53,4 @@ router.patch('/update/:document_id', (req, res) => {
 });
 
 
-/*//update a specific review
-router.patch('/update/:id', (req, res) => {
-    const reviewId = req.params.document_id;
-    const updatedReview = req.body;
-
-    // Kontrollera om Content-Type är application/json
-    if (req.headers['content-type'] !== 'application/json') {
-        return res.status(400).json({ error: 'Invalid Content-Type. Expected application/json.' });
-    }
-    console.log('UPDATE documents SET ? WHERE document_id = ?', [updatedReview, reviewId]);
-
-
-    connection.query('UPDATE documents SET ? WHERE document_id = ?', [updatedReview, reviewId], (err, data) => {
-        if (err) {
-            console.log('Error updating review:', err);
-            return res.status(500).json({ error: 'Error updating review.' });
-        }
-
-        res.json({ message: 'Recensionen är uppdaterad.' });
-    });
-    
-}); */
-
-
 module.exports = router;

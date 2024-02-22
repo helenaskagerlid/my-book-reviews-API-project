@@ -10,18 +10,17 @@ tinymce.init({
     }
 });
 
-const reviewButton = document.getElementById("reviewButton");
+const saveButton = document.getElementById("saveButton");
 
-reviewButton.addEventListener("click", function (event) {
-    //event.preventDefault();
+saveButton.addEventListener("click", function (event) {
     console.log('click');
 
     let reviewTitle = document.getElementById('title');
-    let reviewContent = document.getElementById('reviewContent');
+    let reviewContent = tinymce.get('reviewContent');
 
     let saveReview = {
         title: reviewTitle.value,
-        content: reviewContent.value
+        content: reviewContent.getContent()
     };
 
     fetch('http://localhost:3000/documents/create', {
@@ -34,14 +33,21 @@ reviewButton.addEventListener("click", function (event) {
         .then(res => res.json())
         .then(data => {
             console.log('Spara recension', data);
+            
+            // Empty the TinyMCE editor content
+            reviewContent.setContent('');
+
+            // Clear the title field
             reviewTitle.value = '';
-            reviewContent.value = '';
+
+            // Print the updated reviews
             printReviews();
         })
         .catch(error => {
             console.error('Fel vid sparande av recension:', error);
         });
 });
+
 
 let reviewList = document.getElementById('reviewList');
 
@@ -67,17 +73,28 @@ function printReviews() {
                 let deleteButton = createDeleteButton(review.document_id);
                 deleteButton.innerText = 'Radera';
 
+                let editButton = addEditButtonListener(review.document_id);
+                editButton.innerText = 'Redigera recension';
+
                 reviewWrapper.appendChild(h3);
                 reviewWrapper.appendChild(article);
                 reviewWrapper.appendChild(deleteButton);
+                reviewWrapper.appendChild(editButton);
 
                 reviewList.appendChild(reviewWrapper);
+
+                // Lägg till lyssnare för att uppdatera TinyMCE när du klickar på "Redigera recension"
+                editButton.addEventListener('click', () => {
+                    editReview(review.document_id);
+                    tinymce.get('reviewContent').setContent(review.content);
+                });
             });
         })
         .catch(error => {
             console.error('Error printing reviews:', error);
         });
 }
+
 
 function createDeleteButton(documentId) {
     const button = document.createElement('button');
@@ -95,9 +112,88 @@ function deleteReview(documentId) {
         .then(res => res.json())
         .then(data => {
             console.log(data.message);
-            printReviews(); // Uppdatera gränssnittet efter borttagning
+            printReviews(); 
         })
         .catch(error => {
             console.error('Error deleting review:', error);
+        });
+}
+
+function addEditButtonListener(documentId) {
+    const editButton = document.createElement('button');
+    editButton.textContent = 'Redigera recension';
+    editButton.addEventListener('click', () => editReview(documentId));
+    return editButton;
+}
+
+function editReview(documentId) {
+    currentReviewId = documentId;
+
+    fetch(`http://localhost:3000/documents/edit/${documentId}`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('title').value = data.title;
+            tinymce.get('reviewContent').setContent(data.content);
+
+            const updateButton = document.createElement('button');
+            updateButton.textContent = 'Uppdatera recension';
+            updateButton.id = 'updateButton';
+
+            updateButton.addEventListener('click', saveChanges);
+
+            const formWrapper = document.querySelector('.form-wrapper');
+            formWrapper.appendChild(updateButton);
+
+            document.getElementById('saveButton').style.display = 'none';
+            updateButton.style.display = 'block';
+
+            editReview.updateButton = updateButton;
+        })
+        .catch(error => {
+            console.error('Error fetching review for editing:', error);
+        });
+}
+
+function saveChanges() {
+    const reviewId = currentReviewId;
+    console.log('Review ID to be updated:', reviewId);
+
+    const titleElement = document.getElementById('title');
+    const contentElement = tinymce.get('reviewContent');
+
+    const updatedReview = {
+        title: titleElement.value,
+        content: contentElement.getContent()
+    };
+
+    fetch(`http://localhost:3000/documents/update/${reviewId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedReview),
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.message);
+            
+            // Empty the TinyMCE editor content
+            contentElement.setContent('');
+
+            // Reset currentReviewId after successful update
+            currentReviewId = null;
+
+            // Hide the update button
+            document.getElementById('updateButton').style.display = 'none';
+
+            // Clear both title and review content fields
+            titleElement.value = '';
+            contentElement.setContent('');
+
+            // Print the updated reviews
+            printReviews();
+        })
+        .catch(error => {
+            console.error('Error updating review:', error);
         });
 }

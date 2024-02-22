@@ -51,6 +51,8 @@ function printReviews() {
         .then(data => {
             console.log('reviews', data);
 
+            reviewList.innerHTML = '';
+
             data.map(review => {
                 let reviewWrapper = document.createElement('div');
                 reviewWrapper.classList.add('review-wrapper');
@@ -62,8 +64,12 @@ function printReviews() {
                 let article = document.createElement('article');
                 article.innerHTML = review.content; 
 
+                let deleteButton = createDeleteButton(review.document_id);
+                deleteButton.innerText = 'Radera';
+
                 reviewWrapper.appendChild(h3);
                 reviewWrapper.appendChild(article);
+                reviewWrapper.appendChild(deleteButton);
 
                 reviewList.appendChild(reviewWrapper);
             });
@@ -73,3 +79,25 @@ function printReviews() {
         });
 }
 
+function createDeleteButton(documentId) {
+    const button = document.createElement('button');
+    button.addEventListener('click', () => deleteReview(documentId));
+    return button;
+}
+
+function deleteReview(documentId) {
+    fetch(`http://localhost:3000/documents/delete/${documentId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.message);
+            printReviews(); // Uppdatera gränssnittet efter borttagning
+        })
+        .catch(error => {
+            console.error('Error deleting review:', error);
+        });
+}

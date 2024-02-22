@@ -52,5 +52,18 @@ router.patch('/update/:document_id', (req, res) => {
     });
 });
 
+//delete a specific review
+router.delete('/delete/:document_id', (req, res) => {
+    const documentId = req.params.document_id;
+
+    connection.query('DELETE FROM documents WHERE document_id = ?', [documentId], (err, data) => {
+        if (err) {
+            console.log('Error deleting document:', err);
+            return res.status(500).json({ error: 'Error deleting document.' });
+        }
+
+        res.json({ message: 'Recensionen är raderad.' });
+    });
+});
 
 module.exports = router;

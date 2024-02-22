@@ -66,4 +66,19 @@ router.delete('/delete/:document_id', (req, res) => {
     });
 });
 
+//get a specific review
+router.get('/edit/:document_id', (req, res) => {
+    const reviewId = req.params.document_id;
+
+    connection.query('SELECT * FROM documents WHERE document_id = ?', [reviewId], (err, data) => {
+        if (err) {
+            console.log('Error fetching review for editing:', err);
+            return res.status(500).json({ error: 'Error fetching review for editing.' });
+        }
+
+        res.json(data[0]);
+    });
+});
+
+
 module.exports = router;

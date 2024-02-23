@@ -198,8 +198,50 @@ function saveChanges() {
         });
 }
 
-let loginButton = document.getElementById('loginButton');
+document.addEventListener('DOMContentLoaded', () => {
+    // När sidan laddas, lägg till hidden-klassen på section-wrapper
+    document.getElementById('sectionWrapper').classList.add('hidden');
+  });
+  
+  let loginButton = document.getElementById('loginButton');
+  let sectionLoginPage = document.getElementById('sectionLoginPage');
+  let sectionWrapper = document.getElementById('sectionWrapper');
+  
+  loginButton.addEventListener('click', async () => {
+      const userName = document.getElementById('userName').value;
+      const userPassword = document.getElementById('userPassword').value;
+    
+      try {
+        const response = await fetch('http://localhost:3000/users/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ userName, userPassword })
+        });
+    
+        const data = await response.json();
+    
+        if (response.ok) {
+          console.log(data.message); // Login successful
+          
+          // Gör något när inloggningen är framgångsrik, t.ex. navigera till en annan sida
+          // Här tar vi bort hidden-klassen från section-wrapper
+          sectionLoginPage.classList.add('hidden');
+          sectionWrapper.classList.remove('hidden');
+        } else {
+          console.error(data.message); // Invalid username and/or password
+          // Visa ett felmeddelande för användaren
+        }
+      } catch (error) {
+        console.error('Network error:', error);
+        // Hantera nätverksfel här
+      }
+  });
+  
 
+
+/*
 if (localStorage.getItem('user')) {
     printLogOutButton();
 }   else {
@@ -223,4 +265,4 @@ function printLogOutButton () {
 
 function printLogInButton () {
     loginButton.innerText = 'Logga in';
-}
+}*/

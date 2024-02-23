@@ -22,6 +22,8 @@ router.post('/', (req, res) => {
 
 // login user
 router.post('/login', (req, res) => {
+  console.log('Received user information', req.body);
+
   const { userName, userPassword } = req.body;
 
   connection.query('SELECT * FROM users WHERE userName = ? AND userPassword = ?', [userName, userPassword], (error, results) => {

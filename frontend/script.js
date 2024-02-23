@@ -197,3 +197,30 @@ function saveChanges() {
             console.error('Error updating review:', error);
         });
 }
+
+let loginButton = document.getElementById('loginButton');
+
+if (localStorage.getItem('user')) {
+    printLogOutButton();
+}   else {
+        printLogInButton();
+    }
+
+loginButton.addEventListener('click', () => {
+    if (localStorage.getItem('user')) {
+        localStorage.removeItem('user')
+        printLogInButton();
+    } else {
+        localStorage.setItem('user', JSON.stringify('helena89'));
+        printLogOutButton();
+    }
+    
+})
+
+function printLogOutButton () {
+    loginButton.innerText = 'Logga ut';
+}
+
+function printLogInButton () {
+    loginButton.innerText = 'Logga in';
+}

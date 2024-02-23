@@ -9,8 +9,23 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <button id="loginButton" class="login-button">Logga in</button>
-    <section class="section-wrapper">
+    <section id="sectionLoginPage" class="section-login-page">
+        <h2>Logga in</h2>
+
+        <form id="loginForm">
+          <label for="userName">Användarnamn:</label>
+          <input type="text" id="userName" name="userName" required>
+      
+          <label for="userPassword">Lösenord:</label>
+          <input type="password" id="userPassword" name="userPassword" required>
+      
+          <button type="button" id="loginButton">Logga in</button>
+        </form>
+      
+        <script src="your-script.js"></script>
+    </section>
+   
+    <section class="section-wrapper hidden" id="sectionWrapper">
         <div class="form-wrapper">
             <h1>Dina bokrecensioner</h1>
         <form class="review-form" id="reviewForm">

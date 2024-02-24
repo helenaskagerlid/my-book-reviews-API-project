@@ -40,8 +40,6 @@ saveButton.addEventListener("click", function (event) {
             // Clear the title field
             reviewTitle.value = '';
 
-            // Print the updated reviews
-            printReviews();
         })
         .catch(error => {
             console.error('Fel vid sparande av recension:', error);
@@ -89,6 +87,8 @@ function printReviews() {
                     tinymce.get('reviewContent').setContent(review.content);
                 });
             });
+
+            reviewList.classList.remove('hidden');
         })
         .catch(error => {
             console.error('Error printing reviews:', error);
@@ -126,14 +126,25 @@ function addEditButtonListener(documentId) {
     return editButton;
 }
 
+    const titleElement = document.getElementById('title');
+    const contentElement = tinymce.get('reviewContent');
+
 function editReview(documentId) {
     currentReviewId = documentId;
+
+    document.getElementById('formWrapper').classList.remove('hidden');
+    document.getElementById('reviewList').classList.add('hidden');
 
     fetch(`http://localhost:3000/documents/edit/${documentId}`)
         .then(res => res.json())
         .then(data => {
             document.getElementById('title').value = data.title;
             tinymce.get('reviewContent').setContent(data.content);
+
+            const existingUpdateButton = document.getElementById('updateButton');
+            if (existingUpdateButton) {
+                existingUpdateButton.remove();
+            }
 
             const updateButton = document.createElement('button');
             updateButton.textContent = 'Uppdatera recension';
@@ -148,6 +159,7 @@ function editReview(documentId) {
             updateButton.style.display = 'block';
 
             editReview.updateButton = updateButton;
+
         })
         .catch(error => {
             console.error('Error fetching review for editing:', error);
@@ -157,9 +169,6 @@ function editReview(documentId) {
 function saveChanges() {
     const reviewId = currentReviewId;
     console.log('Review ID to be updated:', reviewId);
-
-    const titleElement = document.getElementById('title');
-    const contentElement = tinymce.get('reviewContent');
 
     const updatedReview = {
         title: titleElement.value,
@@ -186,12 +195,13 @@ function saveChanges() {
             // Hide the update button
             document.getElementById('updateButton').style.display = 'none';
 
+            //Displaty the save button
+            document.getElementById('saveButton').style.display = 'block';
+
             // Clear both title and review content fields
             titleElement.value = '';
             contentElement.setContent('');
 
-            // Print the updated reviews
-            printReviews();
         })
         .catch(error => {
             console.error('Error updating review:', error);
@@ -199,70 +209,88 @@ function saveChanges() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // När sidan laddas, lägg till hidden-klassen på section-wrapper
     document.getElementById('sectionWrapper').classList.add('hidden');
-  });
-  
-  let loginButton = document.getElementById('loginButton');
-  let sectionLoginPage = document.getElementById('sectionLoginPage');
-  let sectionWrapper = document.getElementById('sectionWrapper');
-  
-  loginButton.addEventListener('click', async () => {
-      const userName = document.getElementById('userName').value;
-      const userPassword = document.getElementById('userPassword').value;
-    
-      try {
-        const response = await fetch('http://localhost:3000/users/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ userName, userPassword })
-        });
-    
-        const data = await response.json();
-    
-        if (response.ok) {
-          console.log(data.message); // Login successful
-          
-          // Gör något när inloggningen är framgångsrik, t.ex. navigera till en annan sida
-          // Här tar vi bort hidden-klassen från section-wrapper
-          sectionLoginPage.classList.add('hidden');
-          sectionWrapper.classList.remove('hidden');
-        } else {
-          console.error(data.message); // Invalid username and/or password
-          // Visa ett felmeddelande för användaren
-        }
-      } catch (error) {
-        console.error('Network error:', error);
-        // Hantera nätverksfel här
-      }
-  });
-  
+    document.getElementById('loginForm').classList.remove('hidden');
+});
 
+let loginButton = document.getElementById('loginButton');
+let sectionLoginPage = document.getElementById('sectionLoginPage');
+let sectionWrapper = document.getElementById('sectionWrapper');
+let formWrapper = document.getElementById('formWrapper');
+let reviewNav = document.getElementById('reviewNav');
 
-/*
-if (localStorage.getItem('user')) {
-    printLogOutButton();
-}   else {
-        printLogInButton();
-    }
-
-loginButton.addEventListener('click', () => {
-    if (localStorage.getItem('user')) {
-        localStorage.removeItem('user')
-        printLogInButton();
-    } else {
-        localStorage.setItem('user', JSON.stringify('helena89'));
-        printLogOutButton();
-    }
-    
-})
-
-function printLogOutButton () {
+function printLogOutButton() {
     loginButton.innerText = 'Logga ut';
 }
 
-function printLogInButton () {
+function printLogInButton() {
     loginButton.innerText = 'Logga in';
-}*/
+}
+
+loginButton.addEventListener('click', () => {
+    const isUserLoggedIn = localStorage.getItem('user');
+
+    if (isUserLoggedIn) {
+        localStorage.removeItem('user');
+        printLogInButton();
+        sectionWrapper.classList.add('hidden');
+        formWrapper.classList.add('hidden');
+        reviewNav.classList.add('hidden');
+    } else {
+        localStorage.setItem('user', JSON.stringify('helena89'));
+        printLogOutButton();
+        //sectionLoginPage.classList.add('hidden');
+        sectionWrapper.classList.remove('hidden');
+        formWrapper.classList.remove('hidden');
+        reviewNav.classList.remove('hidden');
+    }
+    titleElement.value = '';
+    contentElement.setContent('');
+});
+
+// Vid sidans laddning
+if (localStorage.getItem('user')) {
+    printLogOutButton();
+} else {
+    printLogInButton();
+}
+
+
+  // ...
+  let showReviewsButton = document.getElementById('showReviewsButton');
+
+  showReviewsButton.addEventListener('click', function () {
+    const titleElement = document.getElementById('title');
+    const contentElement = tinymce.get('reviewContent');
+
+    printReviews();
+
+    document.getElementById('formWrapper').classList.add('hidden');
+    reviewList.classList.remove('hidden');
+
+    titleElement.value = '';
+    contentElement.setContent('');
+
+  });
+
+  
+  let newReviewButton = document.getElementById('newReviewButton');
+  newReviewButton.addEventListener('click', function () {
+    const titleElement = document.getElementById('title');
+    const contentElement = tinymce.get('reviewContent'); 
+    reviewList.classList.add('hidden');
+    document.getElementById('formWrapper').classList.remove('hidden');
+  
+    titleElement.value = '';
+    contentElement.setContent('');
+    document.getElementById('saveButton').style.display = 'block';
+    document.getElementById('updateButton').style.display = 'none';
+
+  });
+  
+
+
+// ...
+
+  
+

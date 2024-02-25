@@ -27,22 +27,33 @@ router.post('/create', (req, res) => {
 
 // get all the reviews
 router.get('/', (req, res) => {
-    connection.query('SELECT * FROM documents', (err, data) => {
-        if (err) {
-            console.log('Error fetching documents:', err);
-            return res.status(500).json({ error: 'Error fetching documents.' });
-        }
+    connection.connect((err) => {
+        if(err) console.log('error getting documents', err);
 
-        res.json(data);
-    });
+        let query = 'SELECT * FROM documents';
+
+        connection.query(query, (err, data) => {
+            if (err) {
+                console.log('Error fetching documents:', err);
+                return res.status(500).json({ error: 'Error fetching documents.' });
+            }
+    
+            res.json(data);
+        });
+
+    })
+    
 });
+
 
 //update a specific review
 router.patch('/update/:document_id', (req, res) => {
     const reviewId = req.params.document_id;
     const updatedReview = req.body;
+    let query = 'UPDATE documents SET ? WHERE document_id = ?';
+    let values = [updatedReview, reviewId];
 
-    connection.query('UPDATE documents SET ? WHERE document_id = ?', [updatedReview, reviewId], (err, data) => {
+    connection.query(query, values, (err, data) => {
         if (err) {
             console.log('Error updating review:', err);
             return res.status(500).json({ error: 'Error updating review.' });
@@ -55,8 +66,10 @@ router.patch('/update/:document_id', (req, res) => {
 //delete a specific review
 router.delete('/delete/:document_id', (req, res) => {
     const documentId = req.params.document_id;
+    let query = 'DELETE FROM documents WHERE document_id = ?';
+    let values = [documentId];
 
-    connection.query('DELETE FROM documents WHERE document_id = ?', [documentId], (err, data) => {
+    connection.query(query, values, (err, data) => {
         if (err) {
             console.log('Error deleting document:', err);
             return res.status(500).json({ error: 'Error deleting document.' });
@@ -69,8 +82,10 @@ router.delete('/delete/:document_id', (req, res) => {
 //get a specific review
 router.get('/edit/:document_id', (req, res) => {
     const reviewId = req.params.document_id;
+    let query = 'SELECT * FROM documents WHERE document_id = ?';
+    let values = [reviewId];
 
-    connection.query('SELECT * FROM documents WHERE document_id = ?', [reviewId], (err, data) => {
+    connection.query(query, values, (err, data) => {
         if (err) {
             console.log('Error fetching review for editing:', err);
             return res.status(500).json({ error: 'Error fetching review for editing.' });

@@ -3,14 +3,45 @@
     margin: 0;
 }
 
-body {
-    background-color: rgb(163, 146, 179);
+.first-page-design {
+    margin: 0; 
+    padding: 0; 
+    background-image: url('assets/pinkmoon.jpg');
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: top center;
+
 }
 
-h1 {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    text-align: left;
-    margin: 30px 10px 10px 0px;
+.logged-in-design {
+    background-color: rgb(200, 175, 185);
+    margin: 0;
+    padding: 0; 
+}
+
+.heading {
+    font-family: "Tenor Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 30px 220px 10px 270px;
+    font-size: 4rem;
+
+}
+
+.quote-heading {
+    font-family: "EB Garamond", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.author-heading {
+    font-family: "EB Garamond", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .review-form {
@@ -26,14 +57,20 @@ h1 {
     align-items: center;
 }
 
-.review-button {
-    display: block;
+.save-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-family: "Tenor Sans", serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
     border: none;
     border-radius: 5px;
-    padding: 10px 20px;
-    margin-top: 5px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 15px;
+    transition: background-color 0.3s ease;
+    background-color: rgb(242, 206, 212);
 }
 
 .title, .content-title {
@@ -57,12 +94,15 @@ h1 {
 }
 
 .title, .content-title {
+    font-family: "Tenor Sans", serif;
     text-align: left;
 }
 
 .review-heading {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: "Tenor Sans", serif;
     font-weight: bold;
+    border-bottom: 2px solid #000; 
+    padding-bottom: 5px;
 }
 
 .review-wrapper {
@@ -76,3 +116,128 @@ h1 {
 .hidden {
     display: none;
 }
+
+.section-login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    min-height: 50vh;
+}
+
+.logged-in {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-family: "Tenor Sans", serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    background-color: rgb(242, 206, 212);
+}
+
+.edit-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-family: "Tenor Sans", serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    background-color: rgb(179, 155, 159);
+    margin-top: 5px;
+}
+
+.update-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-family: "Tenor Sans", serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    background-color: rgb(242, 206, 212);
+    margin-top: 5px;
+
+}
+
+.delete-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-family: "Tenor Sans", serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    background-color: rgb(179, 155, 159);
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+.login-button:hover {
+    background-color: rgb(192, 144, 152);
+}
+
+.show-reviews-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-family: "Tenor Sans", serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    background-color: rgb(242, 206, 212);
+    margin-right: 10px;
+}
+
+.new-review-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-family: "Tenor Sans", serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    background-color: rgb(242, 206, 212);
+}
+
+.review-nav {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .review-article {
+    font-family: 'EB Garamond', sans serif;
+  }
+  

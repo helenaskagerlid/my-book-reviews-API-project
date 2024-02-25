@@ -12,6 +12,7 @@ tinymce.init({
 
 const saveButton = document.getElementById("saveButton");
 
+//create a new review that saves in the database
 saveButton.addEventListener("click", function (event) {
     console.log('click');
 
@@ -49,6 +50,7 @@ saveButton.addEventListener("click", function (event) {
 
 let reviewList = document.getElementById('reviewList');
 
+//print all the reviews 
 function printReviews() {
     fetch('http://localhost:3000/documents')
         .then(res => res.json())
@@ -104,6 +106,7 @@ function createDeleteButton(documentId) {
     return button;
 }
 
+// delete a review
 function deleteReview(documentId) {
     fetch(`http://localhost:3000/documents/delete/${documentId}`, {
         method: 'DELETE',
@@ -131,6 +134,7 @@ function addEditButtonListener(documentId) {
     const titleElement = document.getElementById('title');
     const contentElement = tinymce.get('reviewContent');
 
+// edit a review
 function editReview(documentId) {
     currentReviewId = documentId;
 
@@ -168,7 +172,7 @@ function editReview(documentId) {
             console.error('Error fetching review for editing:', error);
         });
 }
-
+// save changes after an edit and update that review in the db
 function saveChanges() {
     const reviewId = currentReviewId;
     console.log('Review ID to be updated:', reviewId);
@@ -233,6 +237,7 @@ function printLogInButton() {
     loginButton.innerText = 'Logga in';
 }
 
+// login function
 loginButton.addEventListener('click', () => {
     const isUserLoggedIn = localStorage.getItem('user');
 
@@ -265,7 +270,7 @@ loginButton.addEventListener('click', () => {
     contentElement.setContent('');
 });
 
-// Vid sidans laddning
+
 if (localStorage.getItem('user')) {
     printLogOutButton();
 } else {
